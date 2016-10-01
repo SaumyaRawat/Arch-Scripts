@@ -1,0 +1,93 @@
+~Don't touch the touch screen!
+
+~Firefox: W + i
+
+~Run : W + r
+
+~Audio Control: pavucontrol paprefs 
+		List All Output devices : aplay -l
+
+~Set Defaults: exo-preferred-applications
+
+~Internet references: 
+>ip link
+>kill NetworkManager: killN
+
+~Commands to turn off touch:
+1)sudo nano /usr/share/X11/xorg.conf.d/10-evdev.conf 
+2)sed -i -e "4s/Video/Audio/" notes.txt
+3)reboot
+
+~Convert image to bmp3: mogrify -format bmp -define bmp:format=bmp3 sourceimagename
+
+~Install packages offline
+pacman -U /root/Download/packagename.tar.gz
+
+~Install font - fontname
+Add fonts to /usr/share/fonts/ and update font cache with fc-cache
+
+~proxy:
+ sudo nano ~/.profile (Commented out)
+
+~VALUE TO BE SET EVERYWHERE: http://proxy.iiit.ac.in:8080/
+
+export http_proxy=http://proxy.iiit.ac.in:8080/
+export https_proxy=http://proxy.iiit.ac.in:8080/
+export ftp_proxy=$http_proxy
+export rsync_proxy=$http_proxy
+export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+
+~Keep proxy through sudo:
+Defaults env_keep += "http_proxy https_proxy ftp_proxy"
+
+~ npm proxy:
+SET:
+npm config set proxy http://proxy.iiit.ac.in:8080/
+
+UNSET:
+npm config rm proxy
+npm config rm https-proxy
+
+~Disable device : 
+xinput set-prop <id> "Device Enabled" 0
+
+When mouse+ logitech keyboard are connected :
+⎡ Virtual core pointer                    	id=2	[master pointer  (3)]
+⎜   ↳ Virtual core XTEST pointer              	id=4	[slave  pointer  (2)]
+⎜   ↳ Logitech USB Receiver                   	id=10	[slave  pointer  (2)]
+⎜   ↳ ELAN Touchscreen                        	id=11	[slave  pointer  (2)]
+⎜   ↳ SynPS/2 Synaptics TouchPad              	id=15	[slave  pointer  (2)]
+⎣ Virtual core keyboard                   	id=3	[master keyboard (2)]
+    ↳ Virtual core XTEST keyboard             	id=5	[slave  keyboard (3)]
+    ↳ Power Button                            	id=6	[slave  keyboard (3)]
+    ↳ Video Bus                               	id=7	[slave  keyboard (3)]
+    ↳ Power Button                            	id=8	[slave  keyboard (3)]
+    ↳ Logitech USB Receiver                   	id=9	[slave  keyboard (3)]
+    ↳ Lenovo EasyCamera                       	id=12	[slave  keyboard (3)]
+    ↳ Ideapad extra buttons                   	id=13	[slave  keyboard (3)]
+    ↳ Logitech USB Receiver                   	id=16	[slave  keyboard (3)]
+    ↳ Keyboard K380                           	id=17	[slave  keyboard (3)]
+    ↳ AT Translated Set 2 keyboard            	id=14	[slave  keyboard (3)]
+When only logitech keyboard is connected : 
+⎡ Virtual core pointer                    	id=2	[master pointer  (3)]
+⎜   ↳ Virtual core XTEST pointer              	id=4	[slave  pointer  (2)]
+⎜   ↳ ELAN Touchscreen                        	id=9	[slave  pointer  (2)]
+⎜   ↳ SynPS/2 Synaptics TouchPad              	id=13	[slave  pointer  (2)]
+⎣ Virtual core keyboard                   	id=3	[master keyboard (2)]
+    ↳ Virtual core XTEST keyboard             	id=5	[slave  keyboard (3)]
+    ↳ Power Button                            	id=6	[slave  keyboard (3)]
+    ↳ Video Bus                               	id=7	[slave  keyboard (3)]
+    ↳ Power Button                            	id=8	[slave  keyboard (3)]
+    ↳ Lenovo EasyCamera                       	id=10	[slave  keyboard (3)]
+    ↳ Ideapad extra buttons                   	id=11	[slave  keyboard (3)]
+    ↳ AT Translated Set 2 keyboard            	id=12	[slave  keyboard (3)]
+
+
+~Connect to wifi using CommandPrompt:
+nmcli dev wifi con ESSID password <Enter password here> name <Enter any name as id>
+
+~ Git proxy settings : 
+git config --global http.proxy http://proxyuser:proxypwd@proxy.server.com:8080
+
+~ Run python script inside interactive mode :
+exec(open("./filename").read())

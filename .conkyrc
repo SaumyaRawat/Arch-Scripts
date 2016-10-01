@@ -1,0 +1,119 @@
+# Conky Google Now style #
+
+# Conky settings #
+background no
+update_interval 1
+double_buffer yes
+no_buffers yes
+
+# Window specifications #
+own_window yes
+own_window_type override
+own_window_transparent no
+#own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_title 
+own_window_colour 000000 #e0e0eb #ffcc66 #e5e5e5
+
+minimum_size 250 0
+maximum_width 250
+# Alignment #
+alignment tr
+gap_x 1500
+gap_y 100
+
+#border_width 5
+border_inner_margin 10
+#border_outer_margin 10
+
+# Graphics settings #
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+# Text settings #
+use_xft yes
+xftalpha 0
+xftfont Open Sans Light:size=10
+
+override_utf8_locale yes
+
+use_spacer none
+short_units yes
+pad_percents 2
+imlib_cache_size 0
+
+
+# Color scheme #
+default_color 666666
+
+color1 0099CC #Blue
+color2 9933CC #Purple
+color3 669900 #Green
+color4 FF8800 #Orange
+color5 CC0000 #Red
+color6 AAAAAA #Grey
+color7 DDDDDD #Light Grey
+
+TEXT
+
+## TIME ##
+${image /home/levicorpus/now.png -p 0,0 -s 250x147}${voffset 0}${font Open Sans Light:pixelsize=20}${alignc}${color1}${time %A}${color}
+${voffset 0}${font Open Sans Light:pixelsize=32}${alignc}${time %d %B %Y}
+${voffset 0}${font Open Sans Light:pixelsize=40}${alignc}${time %H:%M}${font}
+${color7}${color}
+
+## WEATHER ##
+${image /home/levicorpus/now.png -p -0,160 -s 250x246}${offset 4}${execi 300 curl -s "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D29221746&u=c" -o ~/.cache/weather.xml}${font Open Sans Light:size=15}${execi 300 grep "yweather:location" ~/.cache/weather.xml | grep -o "city=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}, ${execi 300 grep "yweather:location" ~/.cache/weather.xml | grep -o "country=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}${font}
+${font Open Sans Light:size=45}${alignr 4}${execi 300 grep "yweather:condition" ~/.cache/weather.xml | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*"}°${font}
+${execi 300 cp -f ~/.weathericons/$(grep "yweather:condition" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -1 ).png ~/.cache/weather.png}${image ~/.cache/weather.png -p 4,220 -s 60x60}## Condition, Speed ##
+${font Open Sans Light:pixelsize=20}${color6}${execi 300 grep "yweather:condition" ~/.cache/weather.xml | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -1}${font}${color} 
+${font Open Sans Light:pixelsize=15}${color7} ${execi 300 grep "yweather:wind" ~/.cache/weather.xml | grep -o "speed=\"[^\"]*\"" |tail -1| grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr "\n" "a" | sed 's/a/ mph/g'}${font}${color}
+
+${execi 300 cp -f ~/.weathericons/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -n1).png ~/.cache/weather-today.png}${image ~/.cache/weather-today.png -p 4,334 -s 30x30}${execi 300 cp -f ~/.weathericons/$(grep "yweather:forecast" ~/.cache/weather.xml | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tail -n1).png ~/.cache/weather-tomorrow.png}${image ~/.cache/weather-tomorrow.png -p 134,334 -s 30x30}
+${goto 60}${font Open Sans Light:pixelsize=12}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -n1}${goto 190}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tail -n1}
+${goto 60}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -n1}° ${color6}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | head -n1}°${color}${goto 190}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tail -n1}° ${color6}${execi 300 grep "yweather:forecast" ~/.cache/weather.xml | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tail -n1}°${color}${voffset 15}
+${color7}${color}${font}
+
+${voffset -30}
+
+## CPU INFO ##
+${image /home/levicorpus/now.png -p -0,417 -s 250x165}${voffset -15}${offset 4}${font Open Sans Light:pixelsize=15}${color1}CPU0${color}${font}${color3}${font Open Sans Light:pixelsize=15} $cpu%${font}${color}
+${offset 4}${cpugraph cpu0 50,120 FF8800 FF8800}${alignr 4}${cpugraph cpu1 50,120 FF8800 FF8800}
+## temp ##
+${offset 4}${font Open Sans Light:pixelsize=15}${color1}Temp 0:${color}${font}${font Open Sans Light:pixelsize=14}${color2}${execpi 100 sensors | grep 'Core 0:' | cut -c17-21}C${color}${font}${alignr 4}${font Open Sans Light:pixelsize=15}${color1}        Temp 1:${color}${font}${font Open Sans Light:pixelsize=14}${color2}${execpi 100 sensors | grep 'Core 1:' | cut -c17-21}C${color}${font}
+## ram ##
+${offset 4}${font Open Sans Light:pixelsize=15}${color1}RAM:${color}${font}${font Open Sans Light:pixelsize=14}${color3} $memperc% ${color}${font}${alignr 4}${font Open Sans Light:pixelsize=15}${color1}SWAP:${color}${font}${font Open Sans Light:pixelsize=14}${color3} $swapperc${color}${font}${alignr}
+${offset 4}${font Open Sans Light:pixelsize=15}${color1}Uptime:${color}${font} ${alignr 4}${font Open Sans Light:pixelsize=14}${color2}${uptime}${color}${font}${font Open Sans Light:pixelsize=14}${color7}${color}${font}
+
+## PROCESSES ##
+${image /home/levicorpus/now.png -p -0,595 -s 250x130}${offset 4}${font Open Sans Light:pixelsize=14}${color1}Process ${goto 130}CPU%${goto 203} MEM%
+${offset 4}${color1}${top name 1}${color}${goto 125}${color3}${top cpu 1} ${color}${goto 205}${color2}${top mem 1}${color}
+${offset 4}${color1}${top name 2}${color}${goto 125}${color3}${top cpu 2} ${color}${goto 205}${color2}${top mem 2}${color}
+${offset 4}${color1}${top name 3}${color}${goto 125}${color3}${top cpu 3} ${color}${goto 205}${color2}${top mem 3}${color}
+${offset 4}${color1}${top name 4}${color}${goto 125}${color3}${top cpu 4} ${color}${goto 205}${color2}${top mem 4}${color}
+${offset 4}${color1}${top name 5}${color}${goto 125}${color3}${top cpu 5} ${color}${goto 205}${color2}${top mem 5}${color}
+${color7}${color}
+
+## NETWORK ##
+${image /home/levicorpus/now.png -p -0,750 -s 250x140}${if_existing /proc/net/route wlan0}
+${voffset -14}${offset 4}${color1}Up:${color} ${color3}${upspeed wlan0}${color}${alignr 4}${color1}Down:${color} ${color3}${downspeed wlan0}${color}
+${offset 4}${upspeedgraph wlan0 50,120 FF8800 FF8800}${alignr 4}${downspeedgraph wlan0 50,120 FF8800 FF8800}
+${offset 4}${color1}Sent:${color} ${color2}${totalup wlan0}${color}${alignr 4}${color1}Received:${color} ${color2}${totaldown wlan0}${color}
+${else}${if_existing /proc/net/route eth0}
+${voffset -14}${offset 4}${color1}Up:${color} ${color3}${upspeed eth0}${color}${alignr 4}${color1}Down:${color} ${color3}${downspeed eth0}${color}
+${offset 4}${upspeedgraph eth0 50,120 FF8800 FF8800}${alignr 4}${downspeedgraph eth0 50,120 FF8800 FF8800}
+${offset 4}${color1}Sent:${color} ${color2}${totalup eth0}${color}${alignr 4}${color1}Received:${color} ${color2}${totaldown eth0}${color}
+${else}${if_existing /proc/net/route enp0s20u2u2}
+${voffset -14}${offset 4}${color1}Up:${color} ${color3}${upspeed enp0s20u2u2}${color}${alignr 4}${color1}Down:${color} ${color3}${downspeed enp0s20u2u2}${color}
+${offset 4}${upspeedgraph enp0s20u2u2 50,120 FF8800 FF8800}${alignr 4}${downspeedgraph enp0s20u2u2 50,120 FF8800 FF8800}
+${offset 4}${color1}Sent:${color} ${color2}${totalup enp0s20u2u2}${color}${alignr 4}${color1}Received:${color} ${color2}${totaldown enp0s20u2u2}${color}
+${else}${if_existing /proc/net/route wlp1s0}
+${voffset -14}${offset 4}${color1}Up:${color} ${color3}${upspeed wlp1s0}${color}${alignr 4}${color1}Down:${color} ${color3}${downspeed enp0s20u2u2}${color}
+${offset 4}${upspeedgraph wlp1s0 50,120 FF8800 FF8800}${alignr 4}${downspeedgraph wlp1s0 50,120 FF8800 FF8800}
+${offset 4}${color1}Sent:${color} ${color2}${totalup wlp1s0}${color}${alignr 4}${color1}Received:${color} ${color2}${totaldown wlp1s0}${color}
+${else}
+Network disconnected
+${color6}Connect to a network to see statistics${color}
+${voffset 50}
+${endif}${endif}${voffset -24}
