@@ -102,6 +102,16 @@ sudo create_ap wlp2s0 enp3s0 Yer-A-Wifi-Harry Alohomora
 ~ SCP Command : local machine to ssh account
 scp -r[for folder] <local location> saumyar@abacus.iiit.ac.in:
 
+~ SCP Command : ssh to ssh account
+scp user@homeip:/path/to/file /local/path/
+
 ~ Abacus command :
 salloc -n 1 -A saumyar -p long --mem-per-cpu=2048 -t 5:00:00 srun -n 1 --pty --preserve-env $SHELL
 /scratch/matlab/R2016a/bin/matlab  -nodesktop -nosplash -r <matlab script name w/o .m >
+
+~ Change system clock
+hwclock --set --date "8/11/2013 23:10:45"
+
+~ Git proxy
+git config --global http.proxy http://proxyuser:proxypwd@proxy.server.com:8080
+git config --global --unset http.proxy
