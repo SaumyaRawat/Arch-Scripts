@@ -102,16 +102,41 @@ sudo create_ap wlp2s0 enp3s0 Yer-A-Wifi-Harry Alohomora
 ~ SCP Command : local machine to ssh account
 scp -r[for folder] <local location> saumyar@abacus.iiit.ac.in:
 
-~ SCP Command : ssh to ssh account
-scp user@homeip:/path/to/file /local/path/
-
 ~ Abacus command :
 salloc -n 1 -A saumyar -p long --mem-per-cpu=2048 -t 5:00:00 srun -n 1 --pty --preserve-env $SHELL
 /scratch/matlab/R2016a/bin/matlab  -nodesktop -nosplash -r <matlab script name w/o .m >
 
-~ Change system clock
-hwclock --set --date "8/11/2013 23:10:45"
+~ Get Nvidia settings
+optirun -b none nvidia-settings -c :8
 
-~ Git proxy
-git config --global http.proxy http://proxyuser:proxypwd@proxy.server.com:8080
-git config --global --unset http.proxy
+~ Increase/Decrease Screen Brightness
+ "xbacklight -inc [number]" and "xbacklight -dec [number]"
+
+~ Check if GPU is in use: 
+nvidia-smi
+
+~Keyboard backlight
+sudo msi-perkeyrgb -m GS63 --list-presets
+
+~ Connect to pulse secure vpn using openconnect
+sudo openconnect --juniper vpn.umiacs.umd.edu
+
+~ Expressvp
+  To activate ExpressVPN account:
+      expressvpn activate
+
+   To connect to smart location or last connected location:
+      expressvpn connect
+
+   To connect to a country:
+      expressvpn connect "Germany"
+
+   To connect to a specific location:
+      expressvpn connect "Germany - Frankfurt - 1"
+
+   To check current connection status:
+      expressvpn status
+
+   To disable Network Lock:
+      expressvpn preferences set network_lock off
+
